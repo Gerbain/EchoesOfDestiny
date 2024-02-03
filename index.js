@@ -1,27 +1,58 @@
+import { postUpdate } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
+let currentState = 'START';
 
-navigate('WOODS-PATH1', gameMap);
-console.log(gameMap);
-console.log('app loaded');
+function appSetup(){
+    postUpdate("Welcome to Echos Of Destiny");
+    postUpdate("Say 'start' to begin your journey...");
+    console.log(gameMap);
+    console.log('app loaded');
+}
 
-function postUpdate(message) {
-  const gameOutput = document.getElementById('gameOutput');
-  const newMessage = document.createElement('div');
-  newMessage.textContent = message;
-  gameOutput.appendChild(newMessage);
+function processInput(input) {
 
-  gameOutput.scrollTop = gameOutput.scrollHeight;
+    currentState = handleInput(input);
+
+    switch (currentState) {
+        case 'start':
+            // random event chance
+            break;
+        case 'path':
+            // random event chance
+            break;
+        case 'area':
+            processChoiceInput(input);
+            break;
+        case 'battle':
+            processBattleInput(input);
+            break;
+        default:
+            postUpdate("You are confused where you are..."); //unknown state
+    }
+}
+
+function handleInput(input){
+    navigate(currentState, gameMap);
+}
+
+function processChoiceInput(input) {
+    // Numeric inputs for choices
+}
+
+function processBattleInput(input) {
+    // Keyword inputs for battle actions
 }
 
 document
   .getElementById('commandInput')
   .addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
-      const command = event.target.value;
-      postUpdate('> ' + command);
-
-      event.target.value = ''; // Clear the input field
+        const command = event.target.value;
+        postUpdate('> ' + command);
+        processInput(command);
+        event.target.value = ''; // Clear the input field
     }
   });
-postUpdate('Welcome to the game! Enter commands to play.');
+
+appSetup();

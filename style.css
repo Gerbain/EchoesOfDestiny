@@ -13,22 +13,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: black;
   }
+
+main{
+  min-width: 900px;
+}
   
-  .game-output {
-    width: 60%;
-    height: 400px; /* Adjust based on your preference */
-    overflow-y: auto; /* Allows scrolling */
-    background-color: black; /* Light grey background */
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Space between the output and the input field */
-  }
-  
-  .command-input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
+.game-output {
+  width: 60%;
+  height: 400px; /* Adjust based on your preference */
+  overflow-y: auto; /* Allows scrolling */
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between the output and the input field */
+}
+
+.command-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+body {
+    background-color: #0A0F1A; /* Deep, dark blue */
+    color: #F4EDE4; /* Soft, off-white */
+    font-family: 'Georgia', serif; /* A font that fits many themes */
+}
+
+a, .highlight {
+    color: #DAA520; /* Golden yellow for highlights */
+}

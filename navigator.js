@@ -1,3 +1,5 @@
+import { postUpdate } from './utils.js';
+
 function navigate(locationPath, gameMap) {
     const pathSegments = locationPath.split('-');
     let currentLocation = gameMap;
@@ -17,7 +19,7 @@ function navigate(locationPath, gameMap) {
     // If there are options, display them
     if (currentLocation.options) {
       currentLocation.options.forEach((option, index) => {
-        console.log(`${index + 1}. ${option.label}`);
+        postUpdate(`${index + 1}. ${option.label}`);
       });
     }
   }
