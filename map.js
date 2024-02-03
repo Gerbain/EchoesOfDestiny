@@ -1,8 +1,9 @@
 const gameMap = {
     START: {
         description:
-        'You are in the dense woods. Paths lead in multiple directions.',
-        type: 'start_app',
+        'You wake up in a strange cabin.',
+        type: 'start',
+        optionLabel: 'Choose your next move',
         options: [
             { label: 'Head out the cabin', goto: 'CABIN' },
             { label: 'Collect your belongins', goto: 'COLLECT-START' },

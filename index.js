@@ -27,6 +27,9 @@ function processInput(input) {
         case 'battle':
             processBattleInput(input);
             break;
+        case undefined:
+            postUpdate("You are a developer-wizard in an uncoded path. DEBUG:"+currentState);
+            break;
         default:
             postUpdate("You are confused where you are..."); //unknown state
     }

@@ -14,13 +14,14 @@ function navigate(locationPath, gameMap) {
       }
     }
   
-    console.log(currentLocation.description);
+    postUpdate(currentLocation.description);
   
     // If there are options, display them
     if (currentLocation.options) {
-      currentLocation.options.forEach((option, index) => {
-        postUpdate(`${index + 1}. ${option.label}`);
-      });
+        postUpdate(currentLocation.optionLabel);
+        currentLocation.options.forEach((option, index) => {
+            postUpdate(`${index + 1}. ${option.label}`);
+        });
     }
   }
   
