@@ -1,7 +1,10 @@
 import { postUpdate } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
-let currentState = 'START';
+let player = {
+    currentState: '',
+    currentPath: '',
+}
 
 function appSetup(){
     postUpdate("Welcome to Echos Of Destiny");
@@ -12,9 +15,9 @@ function appSetup(){
 
 function processInput(input) {
 
-    currentState = handleInput(input);
+    player.currentState = handleInput(input);
 
-    switch (currentState) {
+    switch (player.currentState) {
         case 'start':
             // random event chance
             break;
@@ -28,7 +31,7 @@ function processInput(input) {
             processBattleInput(input);
             break;
         case undefined:
-            postUpdate("You are a developer-wizard in an uncoded path. DEBUG:"+currentState);
+            postUpdate("You are a developer-wizard in an uncoded path. DEBUG:"+player.currentState);
             break;
         default:
             postUpdate("You are confused where you are..."); //unknown state
@@ -36,7 +39,7 @@ function processInput(input) {
 }
 
 function handleInput(input){
-    navigate(currentState, gameMap);
+    navigate(player.currentState, gameMap);
 }
 
 function processChoiceInput(input) {
