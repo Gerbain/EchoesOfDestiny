@@ -1,23 +1,18 @@
-import { postUpdate } from './utils.js';
+import { player } from './player.js';
+import { postUpdate, findMatch, findInGameMap, isValidOption } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
-let player = {
-    currentState: '',
-    currentPath: '',
-}
 
 function appSetup(){
     postUpdate("Welcome to Echos Of Destiny");
     postUpdate("Say 'start' to begin your journey...");
-    console.log(gameMap);
-    console.log('app loaded');
 }
 
 function processInput(input) {
 
-    player.currentState = handleInput(input);
+    handleInput(input);
 
-    switch (player.currentState) {
+    switch (player.currentPath.type) {
         case 'start':
             // random event chance
             break;
@@ -39,7 +34,32 @@ function processInput(input) {
 }
 
 function handleInput(input){
-    navigate(player.currentState, gameMap);
+    //player.currentState = handleInput(input);
+    //let match = findMatch(input);
+    let matchMap = findInGameMap(gameMap, input);
+    let isValidInput = isValidOption(player.currentState, input);
+
+    if(isValidInput || input.toUpperCase() == "START"){
+        postUpdate(matchMap.description);
+
+        if (matchMap.options) {
+            postUpdate(matchMap.optionLabel);
+            matchMap.options.forEach((option, index) => {
+                let update = index+1+". ["+option.goto+"] "+option.label;
+                postUpdate(update);
+            });
+        }
+        postUpdate("---")
+    
+        player.currentState = matchMap.key;
+        player.currentPath = matchMap;
+    }
+
+    console.log(matchMap);
+    console.log(matchMap.key);
+    console.log(player);
+    console.log(isValidInput);
+
 }
 
 function processChoiceInput(input) {

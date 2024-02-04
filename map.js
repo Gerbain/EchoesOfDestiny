@@ -6,7 +6,25 @@ const gameMap = {
         optionLabel: 'Choose your next move',
         options: [
             { label: 'Head out the cabin', goto: 'CABIN' },
-            { label: 'Collect your belongins', goto: 'COLLECT-START' },
+            { label: 'Collect your belongins', goto: 'COLLECT_START' },
+          ],
+    },
+    CABIN: {
+        description:
+        'You leave the cabin...',
+        type: 'path',
+        optionLabel: 'Choose your next move',
+        options: [
+            { label: 'Its too cold to stay out', goto: 'START' },
+          ],
+    },
+    COLLECT_START: {
+        description:
+        'You collect your items',
+        type: 'path',
+        optionLabel: 'Choose your next move',
+        options: [
+            { label: 'Head out the cabin', goto: 'CABIN' },
           ],
     },
     WOODS: {
@@ -39,6 +57,6 @@ const gameMap = {
       },
     },
   };
-  console.log('Map Loaded');
+
   export { gameMap };
   
