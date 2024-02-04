@@ -25,12 +25,18 @@ const gameMap = {
         optionLabel: 'Choose your next move',
         options: [
             { label: 'Head out the cabin', goto: 'CABIN' },
+            { label: 'Head out the woods', goto: 'WOODS' },
           ],
     },
     WOODS: {
       description:
         'You are in the dense woods. Paths lead in multiple directions.',
       type: 'area',
+      optionLabel: 'Choose your next move',
+        options: [
+            { label: 'Head out the path 1', goto: 'PATH1' },
+            { label: 'Head out the path 2', goto: 'PATH2' },
+          ],
       PATH1: {
         description: 'A narrow path that winds through the trees to the east.',
         type: 'path',
