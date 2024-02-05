@@ -9,6 +9,14 @@ import {
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
 
+const Jerry = new chars.Warrior();
+const GoblinS = new chars.GoblinSoldier();
+const GoblinA = new chars.GoblinArcher();
+const GoblinM = new chars.GoblinSpellSlinger();
+const enemies = [GoblinS, GoblinA, GoblinM];
+const randomEnemyIndex = Math.floor(Math.random() * enemies.length);
+const randomEnemy = enemies[randomEnemyIndex];
+
 function appSetup() {
   postUpdate('Welcome to Echos Of Destiny');
   postUpdate("Say 'start' to begin your journey...");
@@ -107,10 +115,13 @@ function processPathInput(input) {
             }
         }
     }*/
-  const Jerry = new chars.Warrior();
-  const enemy = new chars.GoblinArcher();
-  battle(Jerry, enemy);
-  handleInput(input);
+  postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
+  setTimeout(() => {
+    battle(Jerry, randomEnemy);
+  }, 3000);
+  setTimeout(() => {
+    handleInput(input);
+  }, 5000);
 }
 
 function battle(hero, opponent) {
@@ -178,7 +189,7 @@ function battle(hero, opponent) {
           postUpdate('You feel like you will be stronger next time you rest..');
         }
         hero.experiencePoints = opponent.experiencePoints;
-        break; // Exit loop if opponent is defeated
+        break;
       }
       heroTurn = false;
       enemyTurn = true;
@@ -189,7 +200,6 @@ function battle(hero, opponent) {
       if (hero.health <= 0) {
         postUpdate('Hero defeated! Opponent wins!');
         location.reload();
-        break; // Exit loop if hero is defeated
       }
       enemyTurn = false;
       heroTurn = true;

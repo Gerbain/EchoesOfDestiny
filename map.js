@@ -72,7 +72,7 @@ const gameMap = {
     options: [
       { label: 'Investigate the glimmering object', goto: 'GLIMMERING_OBJECT' },
       { label: 'Rest by the pond’s edge', goto: 'POND_REST' },
-      { label: 'Return to the northern glight', goto: 'NORTHERN_GLIGHT' },
+      { label: 'Return to the northern glight', goto: 'NORTHERN_LIGHT' },
     ],
   },
   FORGOTTEN_SHRINE: {
@@ -83,7 +83,7 @@ const gameMap = {
     options: [
       { label: 'An inscribed stone tablet', goto: 'STONE_TABLET' },
       { label: 'A pathway leading underground', goto: 'UNDERGROUND_PATHWAY' },
-      { label: 'The path back to the clearing', goto: 'NORTHERN_GLIGHT' },
+      { label: 'The path back to the clearing', goto: 'NORTHERN_LIGHT' },
     ],
   },
   ANCIENT_TREE: {

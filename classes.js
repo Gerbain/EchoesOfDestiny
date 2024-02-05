@@ -8,6 +8,7 @@ import {
 export class Monster {
   constructor(
     type,
+    name,
     health,
     melee,
     magic,
@@ -18,6 +19,7 @@ export class Monster {
     experiencePoints
   ) {
     this.type = type;
+    this.name = name;
     this.health = health;
     this.melee = melee;
     this.magic = magic;
@@ -83,7 +85,7 @@ export class LesserDemon extends Monster {
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const melee = Math.round(Math.random() * (maxMelee - minMelee)) + minMelee;
 
-    super('melee', health, melee, 0, 0, 0, -5, 0, 100);
+    super('melee', 'Lesser Demon', health, melee, 0, 0, 0, -5, 0, 100);
   }
 }
 
@@ -104,6 +106,7 @@ export class GoblinArcher extends Monster {
 
     super(
       'ranged',
+      'Goblin Archer',
       health,
       0,
       0,
@@ -132,6 +135,7 @@ export class GoblinSpellSlinger extends Monster {
 
     super(
       'magic',
+      'Goblin Spellslinger',
       health,
       0,
       magic,
@@ -160,6 +164,7 @@ export class GoblinSoldier extends Monster {
 
     super(
       'melee',
+      'Goblin Soldier',
       health,
       melee,
       0,
@@ -175,6 +180,7 @@ export class GoblinSoldier extends Monster {
 export class Hero {
   constructor(
     archetype,
+    name,
     type,
     health,
     melee,
@@ -187,6 +193,7 @@ export class Hero {
     desc
   ) {
     this.archetype = archetype;
+    this.name = name;
     this.type = type;
     this.health = health;
     this.melee = melee;
@@ -253,12 +260,6 @@ export class Hero {
       if (isCriticalHit) {
         postUpdate('Critical hit! Damage doubled!');
       }
-    } else {
-      postUpdate('The enemy resisted the attack!');
-    }
-
-    if (target.health <= 0) {
-      postUpdate(`You defeated the enemy!`);
     }
   }
 }
@@ -266,7 +267,7 @@ export class Hero {
 export class Warrior extends Hero {
   constructor() {
     const baseHealth = 20;
-    const baseMelee = 5;
+    const baseMelee = 8;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -279,6 +280,7 @@ export class Warrior extends Hero {
 
     super(
       'warrior',
+      'player',
       'melee',
       health,
       melee,
@@ -314,6 +316,7 @@ export class Mage extends Hero {
 
     super(
       'mage',
+      'player',
       'magic',
       health,
       0,
@@ -350,6 +353,7 @@ export class Ranger extends Hero {
 
     super(
       'ranger',
+      'player',
       'ranged',
       health,
       0,
