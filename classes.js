@@ -1,4 +1,9 @@
-import { postUpdate, findMatch, findInGameMap, isValidOption } from './utils.js';
+import {
+  postUpdate,
+  findMatch,
+  findInGameMap,
+  isValidOption,
+} from './utils.js';
 
 export class Monster {
   constructor(
@@ -10,7 +15,7 @@ export class Monster {
     meleeDef,
     magicDef,
     rangedDef,
-    experiencePoints 
+    experiencePoints
   ) {
     this.type = type;
     this.health = health;
@@ -20,50 +25,49 @@ export class Monster {
     this.meleeDef = meleeDef;
     this.magicDef = magicDef;
     this.rangedDef = rangedDef;
-    this.experiencePoints = experiencePoints
+    this.experiencePoints = experiencePoints;
   }
 
-    attack(target) {
-      const calculateDamage = (base, defense) => {
-          let baseDamage = base - defense;
-          const damageVariation = baseDamage * 0.15;
-          const randomDamage = baseDamage + (Math.random() * 2 - 1) * damageVariation;
-          return randomDamage > 0 ? randomDamage : 0;
-      };
-  
-      let baseDamage = 0;
-  
-      if (this.type === 'melee') {
-          baseDamage = calculateDamage(this.melee, target.meleeDef);
-          postUpdate(`The enemy strikes at you.`);
-      } else if (this.type === 'magic') {
-          baseDamage = calculateDamage(this.magic, target.magicDef);
-          postUpdate(`The enemy casts a spell on you.`);
-      } else if (this.type === 'ranged') {
-          baseDamage = calculateDamage(this.ranged, target.rangedDef);
-          postUpdate(`The enemy attacks you from a distance.`);
-      } else {
-          postUpdate('Invalid attack type.');
-          return;
-      }
-  
-      const criticalChance = Math.random();
-      const isCriticalHit = criticalChance <= 0.05;
-      const finalDamage = isCriticalHit ? baseDamage * 2 : baseDamage;
-  
-      if (finalDamage > 0) {
-          target.health -= finalDamage;
-          postUpdate(`Dealt ${finalDamage.toFixed(2)} damage.`);
-          if (isCriticalHit) {
-              postUpdate('Critical hit! Damage doubled!');
-          }
-      } else {
-          postUpdate('You resisted the attack!');
-      }
-  }
-  
-  }
+  attack(target) {
+    const calculateDamage = (base, defense) => {
+      let baseDamage = base - defense;
+      const damageVariation = baseDamage * 0.15;
+      const randomDamage =
+        baseDamage + (Math.random() * 2 - 1) * damageVariation;
+      return randomDamage > 0 ? randomDamage : 0;
+    };
 
+    let baseDamage = 0;
+
+    if (this.type === 'melee') {
+      baseDamage = calculateDamage(this.melee, target.meleeDef);
+      postUpdate(`The enemy strikes at you.`);
+    } else if (this.type === 'magic') {
+      baseDamage = calculateDamage(this.magic, target.magicDef);
+      postUpdate(`The enemy casts a spell on you.`);
+    } else if (this.type === 'ranged') {
+      baseDamage = calculateDamage(this.ranged, target.rangedDef);
+      postUpdate(`The enemy attacks you from a distance.`);
+    } else {
+      postUpdate('Invalid attack type.');
+      return;
+    }
+
+    const criticalChance = Math.random();
+    const isCriticalHit = criticalChance <= 0.05;
+    const finalDamage = isCriticalHit ? baseDamage * 2 : baseDamage;
+
+    if (finalDamage > 0) {
+      target.health -= finalDamage;
+      postUpdate(`Dealt ${finalDamage.toFixed(2)} damage.`);
+      if (isCriticalHit) {
+        postUpdate('Critical hit! Damage doubled!');
+      }
+    } else {
+      postUpdate('You resisted the attack!');
+    }
+  }
+}
 
 export class LesserDemon extends Monster {
   constructor() {
@@ -79,7 +83,7 @@ export class LesserDemon extends Monster {
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const melee = Math.round(Math.random() * (maxMelee - minMelee)) + minMelee;
 
-    super('melee', health, melee, 0, 0, 0, -5, 0,100);
+    super('melee', health, melee, 0, 0, 0, -5, 0, 100);
   }
 }
 
@@ -191,28 +195,35 @@ export class Hero {
     this.meleeDef = meleeDef;
     this.magicDef = magicDef;
     this.rangedDef = rangedDef;
-    this.experiencePoints = experiencePoints; 
+    this.experiencePoints = experiencePoints;
     this.desc = desc;
   }
-   levelUp(){
+  levelUp() {
     if (this.experiencePoints > 100) {
       postUpdate('Hero leveled up!');
       // Increase combat stats and health by 1 to 3 points
       this.health += Math.floor(Math.random() * 3) + 1;
-      this.melee > 0 ? this.melee += Math.floor(Math.random() * 3) + 1 : this.melee = 0
-      this.magic > 0 ? this.magic += Math.floor(Math.random() * 3) + 1 : this.magic = 0
-      this.ranged > 0 ? this.ranged += Math.floor(Math.random() * 3) + 1 : this.ranged = 0
-      this.experiencePoints = 0;
-    }else{
-      postUpdate(`You do not feel strong enough yet.`)
+      this.melee > 0
+        ? (this.melee += Math.floor(Math.random() * 3) + 1)
+        : (this.melee = 0);
+      this.magic > 0
+        ? (this.magic += Math.floor(Math.random() * 3) + 1)
+        : (this.magic = 0);
+      this.ranged > 0
+        ? (this.ranged += Math.floor(Math.random() * 3) + 1)
+        : (this.ranged = 0);
+      this.experiencePoints -= 100;
+    } else {
+      postUpdate(`You do not feel strong enough yet.`);
     }
   }
-  
+
   attack(target) {
     const calculateDamage = (base, defense) => {
       let baseDamage = base - defense;
       const damageVariation = baseDamage * 0.15;
-      const randomDamage = baseDamage + (Math.random() * 2 - 1) * damageVariation;
+      const randomDamage =
+        baseDamage + (Math.random() * 2 - 1) * damageVariation;
       return randomDamage > 0 ? randomDamage : 0;
     };
 
@@ -245,16 +256,12 @@ export class Hero {
     } else {
       postUpdate('The enemy resisted the attack!');
     }
-    
+
     if (target.health <= 0) {
       postUpdate(`You defeated the enemy!`);
-      this.experiencePoints += target.experiencePoints; 
-     
     }
   }
-  
 }
-
 
 export class Warrior extends Hero {
   constructor() {
