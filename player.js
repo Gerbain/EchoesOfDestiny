@@ -3,6 +3,7 @@ const player = {
     currentPath: 'START',
     currentTimerStart: '',
     currentTimerEnd: '',
+    hero: {},
 }
 
 export{player}

@@ -7,6 +7,8 @@ import { navigate } from './navigator.js';
 function appSetup(){
     postUpdate("Welcome to Echos Of Destiny");
     postUpdate("Say 'start' to begin your journey...");
+
+
 }
 
 function processInput(input) {
@@ -105,6 +107,7 @@ function processPathInput(input){
     const Jerry = new chars.Warrior();
     const enemy = new chars.GoblinArcher();
     battle(Jerry, enemy);
+    handleInput(input);
 }
 
 function battle(hero, opponent){
