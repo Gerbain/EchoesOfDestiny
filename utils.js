@@ -1,6 +1,11 @@
 import { player } from './player.js';
 import { gameMap } from './map.js';
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+export {getRandomInt}
+
 let index = 0;
 function typeCharacter(message) {
     if (index < message.length) {

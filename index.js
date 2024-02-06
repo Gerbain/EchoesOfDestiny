@@ -5,11 +5,12 @@ import {
   findMatch,
   findInGameMap,
   isValidOption,
+  getRandomInt,
 } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
 
-const Jerry = new chars.Warrior();
+//const Jerry = new chars.Warrior();
 const GoblinS = new chars.GoblinSoldier();
 const GoblinA = new chars.GoblinArcher();
 const GoblinM = new chars.GoblinSpellSlinger();
@@ -20,6 +21,22 @@ const randomEnemy = enemies[randomEnemyIndex];
 function appSetup() {
   postUpdate('Welcome to Echos Of Destiny');
   postUpdate("Say 'start' to begin your journey...");
+
+  switch(getRandomInt){
+    case 0:
+      player.hero = new chars.Ranger();
+      break;
+    case 1:
+      player.hero = new chars.Mage();
+      break;
+    case 2:
+      player.hero = new chars.Warrior();
+      break;
+    default:
+      player.hero = new chars.Warrior();
+  }
+
+  
 }
 
 function processInput(input) {
@@ -117,7 +134,7 @@ function processPathInput(input) {
     }*/
   postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
   setTimeout(() => {
-    battle(Jerry, randomEnemy);
+    battle(player.hero, randomEnemy);
   }, 3000);
   setTimeout(() => {
     handleInput(input);
