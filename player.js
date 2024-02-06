@@ -1,5 +1,6 @@
 const player = {
-    currentState: '',
+    currentType: '',
+    currentState: 'idle',
     currentPath: 'START',
     currentTimerStart: '',
     currentTimerEnd: '',
