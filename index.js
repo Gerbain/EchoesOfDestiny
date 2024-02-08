@@ -14,13 +14,16 @@ import {
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
 
-//const Jerry = new chars.Warrior();
-const GoblinS = new chars.GoblinSoldier();
-const GoblinA = new chars.GoblinArcher();
-const GoblinM = new chars.GoblinSpellSlinger();
-const enemies = [GoblinS, GoblinA, GoblinM];
-const randomEnemyIndex = getRandomInt(enemies.length);
-const randomEnemy = enemies[randomEnemyIndex];
+function enemyGenerator() {
+  const GoblinS = new chars.GoblinSoldier();
+  const GoblinA = new chars.GoblinArcher();
+  const GoblinM = new chars.GoblinSpellSlinger();
+  const enemies = [GoblinS, GoblinA, GoblinM];
+  const randomEnemyIndex = getRandomInt(enemies.length);
+  return enemies[randomEnemyIndex];
+}
+
+const randomEnemy = enemyGenerator();
 
 function appSetup() {
   postUpdate('Welcome to Echoes Of Destiny, ');
