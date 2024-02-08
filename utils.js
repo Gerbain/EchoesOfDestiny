@@ -122,3 +122,156 @@ function isValidOption(currentPath, userInput) {
 }
 
 export{isValidOption}
+
+function defineFirstBlood(){
+    const heroSpeed = Math.floor(Math.random() * 21);
+    const enemySpeed = Math.floor(Math.random() * 21);
+    let heroTurn = false;
+    //let enemyTurn = false; -- obsolete, if !heroturn == enemyturn
+
+    // Determine who goes first based on speed
+    if (heroSpeed > enemySpeed) {
+        heroTurn = true;
+        postUpdate('Hero goes first!');
+    } else if (enemySpeed > heroSpeed) {
+        heroTurn = false;
+        postUpdate('Opponent goes first!');
+    } else {
+        // If speeds are equal, randomly decide who goes first
+        const randomTurn = Math.random() >= 0.5;
+        if (randomTurn) {
+            heroTurn = true;
+            postUpdate('Hero goes first!');
+        } else {
+            heroTurn = false;
+            postUpdate('Opponent goes first!');
+        }
+    }
+
+    return {herospeed: heroSpeed, enemyspeed: enemySpeed, heroturn: heroTurn}
+}
+export{defineFirstBlood}
+
+function isBattleOver(hero, opponent){
+    let result = false;
+    let status = false;
+    
+    if (opponent.health <=0) {
+        player.currentState = 'idle';
+        result = true;
+        status = true;
+    }
+
+    if (hero.health <=0) {
+        player.currentState = 'idle';
+        result = true;
+        status = false;
+    }
+
+    return {result: result, status: status, hero: hero, opponent: opponent} 
+    // result: true battle is over, one is dead
+    // status - true hero = alive, false hero = dead
+}
+export{isBattleOver}
+
+function printBattleOptions(hero, opponent, battleLogic){
+    postUpdate('-------------------------------');
+    postUpdate('Choose your action:');
+    postUpdate('1. Normal Attack');
+    postUpdate('2. Special Attack');
+    postUpdate('3. Run');
+    postUpdate('-------------------------------');
+    player.battleState = false;
+
+    return new Promise((resolve, reject) => {
+        // Display battle options to the player
+        getBattleInputLoop(hero, opponent, battleLogic).then(() => {
+            resolve({result: true}); // Resolve the promise here, after getBattleInputLoop completes
+        }).catch(error => {
+            reject(error); // In case there's an error within getBattleInputLoop
+        });
+    });
+  
+}
+export{printBattleOptions}
+
+function waitForInput(inputElement) {
+    return new Promise(resolve => {
+        const handleInput = (event) => {
+            if (event.key === 'Enter') {
+                inputElement.removeEventListener('keypress', handleInput);
+                resolve(inputElement.value);
+                inputElement.value = '';
+            }
+        };
+        inputElement.addEventListener('keypress', handleInput);
+    });
+}
+  
+// Async function containing the while loop
+async function getBattleInputLoop(hero, opponent, battleLogic) {
+    const inputElement = document.getElementById('commandInput');
+    let continueLoop = true;
+    player.battleState = false;
+
+    while (continueLoop) {
+        console.log('Waiting for input...');
+        player.battleState = false;
+        const userInput = await waitForInput(inputElement);
+        console.log('User input:', userInput);
+        
+        switch (userInput) {
+            case '1':
+                hero.attack(opponent);
+                postUpdate(`Opponent has ${opponent.health.toFixed(2)} health left.`);
+                continueLoop = false;
+                break;
+            case '2':
+                hero.specialAttack(opponent);
+                continueLoop = false;
+                break;
+            case '3':
+                postUpdate('You attempt to run from battle.');
+                const runChance = Math.random();
+                if (runChance <= 0.5) {
+                    postUpdate('You successfully run away.');
+                } else {
+                    postUpdate('You failed to run away.');
+                }
+                continueLoop = false;
+                break;
+            default:
+                postUpdate('Invalid choice. Defaulting to normal attack.');
+                hero.normalAttack(opponent);
+        }
+        
+        if (userInput.toLowerCase() === 'exit') {
+            continueLoop = false;
+        }
+
+        player.battleState = true;
+    }
+
+
+    console.log('Exited loop');
+    console.log(player.battleState);
+
+    return true;
+}
+
+function printBattleResult(battleStatus, opponent){
+
+    if(battleStatus.result){
+        if(battleStatus.status){
+            postUpdate(`Opponent defeated! You gained ${opponent.experiencePoints} experience points!`);
+        }else{
+            postUpdate('Hero defeated! Opponent wins!');
+        }
+        if (player.hero.experiencePoints >= 100) {
+            postUpdate('You feel like you will be stronger next time you rest..');
+        }
+        player.hero.experiencePoints = battleStatus.opponent.experiencePoints;
+    }
+
+}
+export{printBattleResult}

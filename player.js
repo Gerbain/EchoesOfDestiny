@@ -4,7 +4,9 @@ const player = {
     currentPath: 'START',
     currentTimerStart: '',
     currentTimerEnd: '',
+    battleState: false,
     hero: {},
+    map: {},
 }
 
 export{player}

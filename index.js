@@ -6,6 +6,10 @@ import {
   findInGameMap,
   isValidOption,
   getRandomInt,
+  defineFirstBlood,
+  isBattleOver,
+  printBattleResult,
+  printBattleOptions
 } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
@@ -15,30 +19,28 @@ const GoblinS = new chars.GoblinSoldier();
 const GoblinA = new chars.GoblinArcher();
 const GoblinM = new chars.GoblinSpellSlinger();
 const enemies = [GoblinS, GoblinA, GoblinM];
-const randomEnemyIndex = Math.floor(Math.random() * enemies.length);
+const randomEnemyIndex = getRandomInt( enemies.length);
 const randomEnemy = enemies[randomEnemyIndex];
 
 function appSetup() {
-  postUpdate('Welcome to Echos Of Destiny, ');
+  postUpdate('Welcome to Echoes Of Destiny, ');
   postUpdate("Say 'start' to begin your journey...");
 
   switch(getRandomInt(3)){
     case 0:
       player.hero = new chars.Ranger();
-      postUpdate("Your adventure as a Ranger begins...");
       break;
     case 1:
       player.hero = new chars.Mage();
-      postUpdate("Your adventure as a Mage begins...");
       break;
     case 2:
       player.hero = new chars.Warrior();
-      postUpdate("Your adventure as a Warrior begins...");
       break;
     default:
       player.hero = new chars.Warrior();
-      postUpdate("Your adventure as a Warrior begins...");
-  }  
+  } 
+
+  postUpdate("Your adventure as a "+player.hero.archetype+" begins..")
 }
 
 function validateDesiredPath(input){
@@ -54,7 +56,7 @@ function processInput(input) {
 
   if(validateDesiredPath || input.toUpperCase() == 'START'){
     let matchMap = findInGameMap(gameMap, input);
-
+    player.map = matchMap;
     player.currentType = matchMap.type;
     player.currentPath = matchMap.key;
 
@@ -82,6 +84,64 @@ function processInput(input) {
 
   }
 
+}
+
+async function battle(hero, opponent, ongoing = false, battleLogic) {
+  console.log(opponent);
+  if(!ongoing){
+    battleLogic = defineFirstBlood();
+  }
+
+  // Battle loop
+  if(player.currentState == 'battle'){
+    console.log(player.battleState);
+    console.log(battleLogic);
+
+    if(player.battleState){
+      if (battleLogic.heroturn) {
+        // Player's turn
+        printBattleOptions(hero, opponent, battleLogic).then(playerChoice => {
+          let battleStatus = isBattleOver(hero, opponent);
+          if(battleStatus.result){
+            printBattleResult(battleStatus, opponent);
+            console.log(player);
+            //player.currentState = 'idle';
+            player.map.numberOfEncounters--;
+            
+            return true;
+            //break;
+          }else{
+            battleLogic.heroturn = false;
+            console.log(hero);
+            console.log(opponent)
+            console.log(battleLogic);
+            console.log(player.battleState);
+            console.log(player.currentState);
+              battle(hero, opponent, true, battleLogic);
+            
+          }
+        });        
+      }else{
+        // Opponent's turn
+        opponent.attack(hero);
+        postUpdate(`You have ${hero.health.toFixed(2)} health left.`);
+  
+        let battleStatus = isBattleOver(hero, opponent);
+        if(battleStatus.result){
+          printBattleResult(battleStatus);
+          postUpdate('GIT GUD')
+          setTimeout(() => {
+            location.reload();
+          }, 5000);
+          //break;
+        }else{
+          battleLogic.heroturn = true;
+          battle(hero, opponent, true, battleLogic);
+        }
+        
+      }
+    }
+  }
 }
 
 function handleInput(input) {
@@ -137,178 +197,29 @@ function processPathInput(input) {
             }
         }
     }*/
-  player.currentState = 'battle';
+  player.currentState = 'idle';
   console.log(player.currentState);
-  postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
-  setTimeout(() => {
-    battle(player.hero, randomEnemy);
-  }, 3000);
 
-  /*setTimeout(() => {
-    player.currentState = 'idle';
-    handleInput(input);
-  }, 5000);*/
+    //if(player.map.numberOfEncounters > 0){
+      //postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
+      setTimeout(() => {
+        /*return new Promise((resolve, reject) => {
+          player.battleState = true; //true = fight - false = await user input
+          battle(player.hero, randomEnemy, false, {}).then(superMario => {
+            resolve({result: true}); // Resolve the promise here, after getBattleInputLoop completes
+            processInput(player.key);
+          }).catch(error => {
+            reject(error); // In case there's an error within getBattleInputLoop
+          });
+        });*/
+
+      }, 3000);
+    //}
+    player.currentPath = matchMap.key;
+    player.currentPath = matchMap;
+  
+  console.log("GRAPJES");
 }
-
-function battle(hero, opponent) {
-  const heroSpeed = Math.floor(Math.random() * 21);
-  const enemySpeed = Math.floor(Math.random() * 21);
-  let heroTurn = false;
-  let enemyTurn = false;
-
-  // Determine who goes first based on speed
-  if (heroSpeed > enemySpeed) {
-    heroTurn = true;
-    postUpdate('Hero goes first!');
-  } else if (enemySpeed > heroSpeed) {
-    enemyTurn = true;
-    postUpdate('Opponent goes first!');
-  } else {
-    // If speeds are equal, randomly decide who goes first
-    const randomTurn = Math.random() >= 0.5;
-    if (randomTurn) {
-      heroTurn = true;
-      postUpdate('Hero goes first!');
-    } else {
-      enemyTurn = true;
-      postUpdate('Opponent goes first!');
-    }
-  }
-
-  // Battle loop
-  while (hero.health > 0 && opponent.health > 0) {
-    if (heroTurn) {
-      // Player's turn
-      postUpdate('Choose your action:');
-      postUpdate('1. Normal Attack');
-      postUpdate('2. Special Attack');
-      postUpdate('3. Run');
-      //const choice = parseInt(prompt('Enter the number of your choice:'), 10);
-      
-      getBattleInputLoop();
-
-      /*if(player.currentState == 'battle'){
-        document
-        .getElementById('commandInput')
-        .addEventListener('keypress', function (event) {
-
-          if (event.key === 'Enter') {
-            const command = event.target.value;
-            
-            switch (command) {
-              case 1:
-                hero.attack(opponent);
-                postUpdate(`Opponent has ${opponent.health.toFixed(2)} health left.`);
-                break;
-              case 2:
-                hero.specialAttack(opponent);
-                break;
-              case 3:
-                postUpdate('You attempt to run from battle.');
-                const runChance = Math.random();
-                if (runChance <= 0.5) {
-                  postUpdate('You successfully run away.');
-                  return; // Exit battle loop
-                } else {
-                  postUpdate('You failed to run away.');
-                }
-                break;
-              default:
-                postUpdate('Invalid choice. Defaulting to normal attack.');
-                hero.normalAttack(opponent);
-                break;
-            }
-
-            event.target.value = ''; // Clear the input field
-          }
-
-        });
-      }*/
-      
-      if (opponent.health <= 0) {
-        postUpdate(
-          `Opponent defeated! You gained ${opponent.experiencePoints} experience points!`
-        );
-        if (hero.experiencePoints >= 100) {
-          postUpdate('You feel like you will be stronger next time you rest..');
-        }
-        hero.experiencePoints = opponent.experiencePoints;
-        break;
-      }
-      heroTurn = false;
-      enemyTurn = true;
-    } else if (enemyTurn) {
-      // Opponent's turn
-      opponent.attack(hero);
-      postUpdate(`You have ${hero.health.toFixed(2)} health left.`);
-      if (hero.health <= 0) {
-        postUpdate('Hero defeated! Opponent wins!');
-        
-        setTimeout(() => {
-          //location.reload();
-        }, 5000);
-      }
-      enemyTurn = false;
-      heroTurn = true;
-    }
-  }
-}
-
-// Function to wait for input from the user
-function waitForInput(inputElement) {
-  return new Promise(resolve => {
-      const handleInput = (event) => {
-          if (event.key === 'Enter') {
-              inputElement.removeEventListener('keypress', handleInput);
-              resolve(inputElement.value);
-              inputElement.value = '';
-          }
-      };
-      inputElement.addEventListener('keypress', handleInput);
-  });
-}
-
-// Async function containing the while loop
-async function getBattleInputLoop() {
-  const inputElement = document.getElementById('commandInput');
-  let continueLoop = true;
-
-  while (continueLoop) {
-      console.log('Waiting for input...');
-      const userInput = await waitForInput(inputElement);
-      console.log('User input:', userInput);
-      
-      switch (userInput) {
-        case 1:
-          hero.attack(opponent);
-          postUpdate(`Opponent has ${opponent.health.toFixed(2)} health left.`);
-          break;
-        case 2:
-          hero.specialAttack(opponent);
-          break;
-        case 3:
-          postUpdate('You attempt to run from battle.');
-          const runChance = Math.random();
-          if (runChance <= 0.5) {
-            postUpdate('You successfully run away.');
-            return; // Exit battle loop
-          } else {
-            postUpdate('You failed to run away.');
-          }
-          break;
-        default:
-          postUpdate('Invalid choice. Defaulting to normal attack.');
-          hero.normalAttack(opponent);
-          break;
-      }
-      
-      if (userInput.toLowerCase() === 'exit') {
-          continueLoop = false;
-      }
-  }
-  console.log('Exited loop');
-}
-
 
 function checkTime() {
   const now = new Date();
@@ -347,11 +258,6 @@ function processChoiceInput(input) {
     player.currentPath = matchMap;
   }
 
-  console.log(matchMap);
-  console.log(matchMap.key);
-  console.log(player);
-  console.log(player.currentState);
-  console.log(isValidInput);
 }
 
 function processBattleInput(input) {

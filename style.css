@@ -21,7 +21,7 @@ main{
   
 .game-output {
   width: 100%;
-  height: 400px; /* Adjust based on your preference */
+  height: 600px; /* Adjust based on your preference */
   overflow-y: auto; /* Allows scrolling */
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

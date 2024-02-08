@@ -142,7 +142,7 @@ export class GoblinSpellSlinger extends Monster {
       0,
       -2, // Melee defense
       3, // Magic defense
-      -1, // Ranged defense
+      1, // Ranged defense
       40
     );
   }
@@ -302,8 +302,8 @@ export class Warrior extends Hero {
 
 export class Mage extends Hero {
   constructor() {
-    const baseHealth = 7;
-    const baseMagic = 15;
+    const baseHealth = 14;
+    const baseMagic = 17;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -338,8 +338,8 @@ export class Mage extends Hero {
 
 export class Ranger extends Hero {
   constructor() {
-    const baseHealth = 12;
-    const baseRanged = 10;
+    const baseHealth = 16;
+    const baseRanged = 12;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health

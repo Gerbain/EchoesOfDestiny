@@ -32,6 +32,7 @@ const gameMap = {
     description:
       'The cabin door creaks behind you as you step into the forest’s edge, shrouded in mist.',
     type: 'path',
+    numberOfEncounters: 2,
     travelTime: 60,
     optionLabel: 'Paths diverge before you:',
     options: [
@@ -57,6 +58,7 @@ const gameMap = {
     description:
       'The woods close in around you, the path obscured by thick underbrush and darkness.',
     type: 'path',
+    numberOfEncounters: 2,
     optionLabel: 'As you navigate the dense woods, you encounter:',
     options: [
       { label: 'A mysterious, ancient tree', goto: 'ANCIENT_TREE' },
@@ -68,6 +70,7 @@ const gameMap = {
     description:
       'The pond is crystal clear, reflecting the world like a mirror. Something glimmers beneath the surface.',
     type: 'path',
+    numberOfEncounters: 2,
     optionLabel: 'Do you:',
     options: [
       { label: 'Investigate the glimmering object', goto: 'GLIMMERING_OBJECT' },
@@ -90,6 +93,7 @@ const gameMap = {
     description:
       'The tree’s massive trunk and sprawling roots suggest it has stood here for centuries, if not longer.',
     type: 'path',
+    numberOfEncounters: 2,
     optionLabel: 'Beneath the tree, you find:',
     options: [
       { label: 'A carved wooden box', goto: 'WOODEN_BOX' },
@@ -104,6 +108,7 @@ const gameMap = {
     description:
       'The cave entrance, hidden by thickets, opens into darkness, a cool breeze emanating from within.',
     type: 'path',
+    numberOfEncounters: 2,
     optionLabel: 'Inside the cave, you discover:',
     options: [
       { label: 'Ancient cave paintings', goto: 'CAVE_PAINTINGS' },
