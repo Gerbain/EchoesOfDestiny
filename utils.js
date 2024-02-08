@@ -310,10 +310,11 @@ function updateStats() {
     enemyStats.querySelector('.eMeleeAtt').innerHTML = player.opponent.melee;
     enemyStats.querySelector('.eMagicAtt').innerHTML = player.opponent.magic;
     enemyStats.querySelector('.eRangedAtt').innerHTML = player.opponent.ranged;
-    setInterval(() => {
-      enemyStats.style.visibility = 'visible';
-    }, 3000);
+
+    enemyStats.style.visibility = 'visible';
   } else {
     enemyStats.style.visibility = 'hidden';
   }
 }
+
+export { updateStats };

@@ -96,6 +96,7 @@ function processInput(input) {
 
 async function battle(hero, opponent, ongoing = false, battleLogic) {
   console.log(opponent);
+  player.currentState = 'battle';
   player.opponent = opponent;
   if (!ongoing) {
     battleLogic = defineFirstBlood();
@@ -113,11 +114,14 @@ async function battle(hero, opponent, ongoing = false, battleLogic) {
           let battleStatus = isBattleOver(hero, opponent);
           if (battleStatus.result) {
             printBattleResult(battleStatus, opponent);
-            console.log(player);
             player.currentState = 'idle';
             player.map.numberOfEncounters--;
             player.opponent = {};
-            console.log(player.opponent);
+            setTimeout(() => {
+              displayAreaOptions(player.map);
+            }, 2000);
+            console.log('HALLLOOOO!!!');
+            console.log(player.currentPath);
             return true;
             //break;
           } else {
@@ -205,7 +209,7 @@ function processPathInput(input) {
             }
         }
     }*/
-  player.currentState = 'battle';
+
   console.log(player.currentState);
 
   //if(player.map.numberOfEncounters > 0){
@@ -225,7 +229,7 @@ function processPathInput(input) {
   }, 3000);
   //}
   player.currentPath = matchMap.key;
-  player.currentPath = matchMap;
+  // player.currentPath = matchMap;
 
   console.log('GRAPJES');
 }
