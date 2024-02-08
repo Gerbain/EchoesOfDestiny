@@ -113,8 +113,7 @@ function isValidOption(currentPath, userInput) {
   const currentLocation = gameMap[currentPath];
 
   if (currentLocation && currentLocation.options) {
-    const normalizedInput = userInput.trim().toUpperCase(); // Assuming inputs are keys like 'CABIN', 'COLLECT-START'
-
+    const normalizedInput = userInput.trim().toUpperCase();
     const optionMatch = currentLocation.options.find(
       (option) => option.goto === normalizedInput
     );
@@ -124,7 +123,9 @@ function isValidOption(currentPath, userInput) {
       return true;
     }
   }
-
+  console.log(currentLocation);
+  console.log(currentPath);
+  console.log(userInput);
   return false;
 }
 

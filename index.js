@@ -46,18 +46,27 @@ function appSetup() {
 function validateDesiredPath(input) {
   const isValidInput = isValidOption(player.currentPath, input);
   const matchMap = findInGameMap(gameMap, input);
-  if (isValidInput && matchMap != null) {
+
+  if(input.toUpperCase() == 'START'){
+    return true;
+  }else if(isValidInput && matchMap != null) {
     return true;
   }
   return false;
 }
 
 function processInput(input) {
-  if (validateDesiredPath || input.toUpperCase() == 'START') {
+
+  if (validateDesiredPath(input)) {
     let matchMap = findInGameMap(gameMap, input);
+
     player.map = matchMap;
     player.currentType = matchMap.type;
     player.currentPath = matchMap.key;
+
+    if(input.toUpperCase() == 'START'){
+      matchMap.currentType = 'start';
+    }
 
     switch (player.currentType) {
       case 'start':
@@ -81,7 +90,10 @@ function processInput(input) {
       default:
         postUpdate('You are confused where you are...'); //unknown state
     }
+  }else{
+    postUpdate("You seem to be off path");
   }
+
 }
 
 async function battle(hero, opponent, ongoing = false, battleLogic) {
@@ -238,23 +250,20 @@ function checkTime() {
 }
 
 function processChoiceInput(input) {
-  let matchMap = findInGameMap(gameMap, input);
-  let isValidInput = isValidOption(player.currentPath, input);
-  //temp fix
-  if (true || input.toUpperCase() == 'START') {
-    postUpdate(matchMap.description);
+  
+  displayAreaOptions(player.map);
+  postUpdate('---');
 
-    if (matchMap.options) {
-      postUpdate(matchMap.optionLabel);
-      matchMap.options.forEach((option, index) => {
-        let update = index + 1 + '. [' + option.goto + '] ' + option.label;
-        postUpdate(update);
-      });
-    }
-    postUpdate('---');
+}
 
-    player.currentPath = matchMap.key;
-    player.currentPath = matchMap;
+function displayAreaOptions(map){
+  postUpdate(map.description);
+  if (map.options) {
+    postUpdate(map.optionLabel);
+    map.options.forEach((option, index) => {
+      let update = index + 1 + '. [' + option.goto + '] ' + option.label;
+      postUpdate(update);
+    });
   }
 }
 
