@@ -66,6 +66,20 @@ main {
   place-items: center;
 }
 
+.playerStats ul, .enemyStats ul{
+  width: 100%;
+}
+
+.playerStats li, .enemyStats li{
+  list-style-type: none;
+  padding: 1em 2em;
+}
+
+.playerStats{
+  text-align: right;
+}
+
 .enemyStats {
   visibility: hidden;
+  text-align: left;
 }
