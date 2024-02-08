@@ -1,5 +1,6 @@
 import { player } from './player.js';
 import { gameMap } from './map.js';
+import * as chars from './imports.js';
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -316,5 +317,22 @@ function updateStats() {
     enemyStats.style.visibility = 'hidden';
   }
 }
-
 export { updateStats };
+
+function getEnemy(){
+    const typeOfEnemies = 3;
+    switch (getRandomInt(typeOfEnemies)) {
+      case 0:
+        return new chars.GoblinSoldier();
+        break;
+      case 1:
+        return new chars.GoblinArcher();
+        break;
+      case 2:
+        return new chars.GoblinSpellSlinger();
+        break;
+      default:
+        return new chars.GoblinSoldier();
+    }
+}
+export{getEnemy}

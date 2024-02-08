@@ -10,25 +10,14 @@ import {
   isBattleOver,
   printBattleResult,
   printBattleOptions,
+  getEnemy
 } from './utils.js';
 import { gameMap } from './map.js';
 import { navigate } from './navigator.js';
 
-function enemyGenerator() {
-  const GoblinS = new chars.GoblinSoldier();
-  const GoblinA = new chars.GoblinArcher();
-  const GoblinM = new chars.GoblinSpellSlinger();
-  const enemies = [GoblinS, GoblinA, GoblinM];
-  const randomEnemyIndex = getRandomInt(enemies.length);
-  return enemies[randomEnemyIndex];
-}
-
-const randomEnemy = enemyGenerator();
-
 function appSetup() {
   postUpdate('Welcome to Echoes Of Destiny, ');
   postUpdate("Say 'start' to begin your journey...");
-
   switch (getRandomInt(3)) {
     case 0:
       player.hero = new chars.Ranger();
@@ -86,22 +75,26 @@ function processInput(input) {
       case undefined:
         postUpdate(
           'You are a developer-wizard in an uncoded path. DEBUG:' +
-            player.currentState
+            player.currentPath
         );
         break;
       default:
         postUpdate('You are confused where you are...'); //unknown state
     }
   } else {
-    postUpdate('You seem to be off path... Choose one of the previous paths');
+    postUpdate("In a realm where words are key,");
+    postUpdate("A typo sets the wanderer free.");
+    postUpdate("Three paths clear, but you chose none");
+    postUpdate("Spell again, let the quest be won.");
   }
 }
 
 async function battle(hero, opponent, ongoing = false, battleLogic) {
-  console.log(opponent);
+  
   player.currentState = 'battle';
   player.opponent = opponent;
   if (!ongoing) {
+    postUpdate(`You encountered a ${opponent.name}, prepare yourself!`);
     battleLogic = defineFirstBlood();
   }
 
@@ -121,19 +114,15 @@ async function battle(hero, opponent, ongoing = false, battleLogic) {
             player.map.numberOfEncounters--;
             player.opponent = {};
             setTimeout(() => {
+              postUpdate("&nbsp;");
+              postUpdate("---------------");
+              postUpdate("&nbsp;");
               displayAreaOptions(player.map);
-            }, 2000);
-            console.log('HALLLOOOO!!!');
-            console.log(player.currentPath);
+            }, 500);
             return true;
             //break;
           } else {
             battleLogic.heroturn = false;
-            console.log(hero);
-            console.log(opponent);
-            console.log(battleLogic);
-            console.log(player.battleState);
-            console.log(player.currentState);
             battle(hero, opponent, true, battleLogic);
           }
         });
@@ -176,14 +165,10 @@ function handleInput(input) {
     postUpdate('---');
   }
 
-  console.log(matchMap);
-  console.log(player);
-  console.log(isValidInput);
 }
 
 function processPathInput(input) {
   let matchMap = findInGameMap(gameMap, input);
-  let isValidInput = isValidOption(player.currentState, input);
 
   /*if(isValidInput || input.toUpperCase() == "START"){
         if(player.currentTimerStart == '' && matchMap.travelTime){
@@ -213,14 +198,12 @@ function processPathInput(input) {
         }
     }*/
 
-  console.log(player.currentState);
-
   //if(player.map.numberOfEncounters > 0){
-  postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
+  
   setTimeout(() => {
     return new Promise((resolve, reject) => {
       player.battleState = true; //true = fight - false = await user input
-      battle(player.hero, randomEnemy, false, {})
+      battle(player.hero, getEnemy(), false, {})
         .then((superMario) => {
           resolve({ result: true }); // Resolve the promise here, after getBattleInputLoop completes
           //processInput(player.key);
@@ -229,17 +212,14 @@ function processPathInput(input) {
           reject(error); // In case there's an error within getBattleInputLoop
         });
     });
-  }, 3000);
+  }, 100);
   //}
   player.currentPath = matchMap.key;
-  // player.currentPath = matchMap;
 
-  console.log('GRAPJES');
 }
 
 function checkTime() {
   const now = new Date();
-
   if (now >= player.currentTimerStart && now <= player.currentTimerEnd) {
     console.log('Now is between the start and end times.');
     return false;
@@ -251,7 +231,6 @@ function checkTime() {
     console.log('Now is before the start time.');
     return false;
   }
-  return false;
 }
 
 function processChoiceInput(input) {
