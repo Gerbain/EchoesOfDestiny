@@ -273,8 +273,8 @@ export class Hero {
 
 export class Warrior extends Hero {
   constructor() {
-    const baseHealth = 20;
-    const baseMelee = 8;
+    const baseHealth = 28;
+    const baseMelee = 11;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -310,8 +310,8 @@ export class Warrior extends Hero {
 
 export class Mage extends Hero {
   constructor() {
-    const baseHealth = 14;
-    const baseMagic = 17;
+    const baseHealth = 18;
+    const baseMagic = 15;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -347,8 +347,8 @@ export class Mage extends Hero {
 
 export class Ranger extends Hero {
   constructor() {
-    const baseHealth = 16;
-    const baseRanged = 12;
+    const baseHealth = 20;
+    const baseRanged = 14;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health

@@ -47,16 +47,15 @@ function validateDesiredPath(input) {
   const isValidInput = isValidOption(player.currentPath, input);
   const matchMap = findInGameMap(gameMap, input);
 
-  if(input.toUpperCase() == 'START'){
+  if (input.toUpperCase() == 'START') {
     return true;
-  }else if(isValidInput && matchMap != null) {
+  } else if (isValidInput && matchMap != null) {
     return true;
   }
   return false;
 }
 
 function processInput(input) {
-
   if (validateDesiredPath(input)) {
     let matchMap = findInGameMap(gameMap, input);
 
@@ -64,7 +63,7 @@ function processInput(input) {
     player.currentType = matchMap.type;
     player.currentPath = matchMap.key;
 
-    if(input.toUpperCase() == 'START'){
+    if (input.toUpperCase() == 'START') {
       matchMap.currentType = 'start';
     }
 
@@ -90,10 +89,9 @@ function processInput(input) {
       default:
         postUpdate('You are confused where you are...'); //unknown state
     }
-  }else{
-    postUpdate("You seem to be off path");
+  } else {
+    postUpdate('You seem to be off path... Choose one of the previous paths');
   }
-
 }
 
 async function battle(hero, opponent, ongoing = false, battleLogic) {
@@ -250,13 +248,11 @@ function checkTime() {
 }
 
 function processChoiceInput(input) {
-  
   displayAreaOptions(player.map);
   postUpdate('---');
-
 }
 
-function displayAreaOptions(map){
+function displayAreaOptions(map) {
   postUpdate(map.description);
   if (map.options) {
     postUpdate(map.optionLabel);
