@@ -197,21 +197,21 @@ function processPathInput(input) {
             }
         }
     }*/
-  player.currentState = 'idle';
+  player.currentState = 'battle';
   console.log(player.currentState);
 
     //if(player.map.numberOfEncounters > 0){
       //postUpdate(`You encountered a ${randomEnemy.name}, prepare yourself!`);
       setTimeout(() => {
-        /*return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
           player.battleState = true; //true = fight - false = await user input
           battle(player.hero, randomEnemy, false, {}).then(superMario => {
             resolve({result: true}); // Resolve the promise here, after getBattleInputLoop completes
-            processInput(player.key);
+            //processInput(player.key);
           }).catch(error => {
             reject(error); // In case there's an error within getBattleInputLoop
           });
-        });*/
+        });
 
       }, 3000);
     //}
