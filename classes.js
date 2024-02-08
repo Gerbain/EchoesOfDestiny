@@ -10,6 +10,7 @@ export class Monster {
     type,
     name,
     health,
+    maxHealth,
     melee,
     magic,
     ranged,
@@ -21,6 +22,7 @@ export class Monster {
     this.type = type;
     this.name = name;
     this.health = health;
+    this.maxHealth = health;
     this.melee = melee;
     this.magic = magic;
     this.ranged = ranged;
@@ -85,7 +87,7 @@ export class LesserDemon extends Monster {
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const melee = Math.round(Math.random() * (maxMelee - minMelee)) + minMelee;
 
-    super('melee', 'Lesser Demon', health, melee, 0, 0, 0, -5, 0, 100);
+    super('melee', 'Lesser Demon', health, health, melee, 0, 0, 0, -5, 0, 100);
   }
 }
 
@@ -107,6 +109,7 @@ export class GoblinArcher extends Monster {
     super(
       'ranged',
       'Goblin Archer',
+      health,
       health,
       0,
       0,
@@ -137,6 +140,7 @@ export class GoblinSpellSlinger extends Monster {
       'magic',
       'Goblin Spellslinger',
       health,
+      health,
       0,
       magic,
       0,
@@ -166,6 +170,7 @@ export class GoblinSoldier extends Monster {
       'melee',
       'Goblin Soldier',
       health,
+      health,
       melee,
       0,
       0,
@@ -183,6 +188,7 @@ export class Hero {
     name,
     type,
     health,
+    maxHealth,
     melee,
     magic,
     ranged,
@@ -196,6 +202,7 @@ export class Hero {
     this.name = name;
     this.type = type;
     this.health = health;
+    this.maxHealth = health;
     this.melee = melee;
     this.magic = magic;
     this.ranged = ranged;
@@ -209,7 +216,7 @@ export class Hero {
     if (this.experiencePoints > 100) {
       postUpdate('Hero leveled up!');
       // Increase combat stats and health by 1 to 3 points
-      this.health += Math.floor(Math.random() * 3) + 1;
+      this.maxHealth += Math.floor(Math.random() * 3) + 1;
       this.melee > 0
         ? (this.melee += Math.floor(Math.random() * 3) + 1)
         : (this.melee = 0);
@@ -283,6 +290,7 @@ export class Warrior extends Hero {
       'player',
       'melee',
       health,
+      health,
       melee,
       0,
       0,
@@ -318,6 +326,7 @@ export class Mage extends Hero {
       'mage',
       'player',
       'magic',
+      health,
       health,
       0,
       magic,
@@ -355,6 +364,7 @@ export class Ranger extends Hero {
       'ranger',
       'player',
       'ranged',
+      health,
       health,
       0,
       0,

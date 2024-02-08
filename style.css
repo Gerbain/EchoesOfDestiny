@@ -1,24 +1,24 @@
 * {
-    font-family: 'Special Elite', system-ui;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  /* style.css */
-  body,
-  html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  font-family: 'Special Elite', system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
 
-main{
+/* style.css */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
   min-width: 900px;
 }
-  
+
 .game-output {
   width: 100%;
   height: 600px; /* Adjust based on your preference */
@@ -35,11 +35,33 @@ main{
 }
 
 body {
-    background-color: #0A0F1A; /* Deep, dark blue */
-    color: #F4EDE4; /* Soft, off-white */
-    font-family: 'Georgia', serif; /* A font that fits many themes */
+  background-color: #0a0f1a; /* Deep, dark blue */
+  color: #f4ede4; /* Soft, off-white */
+  font-family: 'Georgia', serif; /* A font that fits many themes */
 }
 
-a, .highlight {
-    color: #DAA520; /* Golden yellow for highlights */
+a,
+.highlight {
+  color: #daa520; /* Golden yellow for highlights */
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+.gameFeedback {
+  flex: 1;
+  max-width: 50%;
+}
+
+.playerStats,
+.enemyStats {
+  flex: 1;
+  max-width: 25%;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
 }

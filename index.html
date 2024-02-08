@@ -15,8 +15,37 @@
   </head>
   <body>
     <main>
-      <div id="gameOutput" class="game-output"></div>
-      <input type="text" id="commandInput" class="command-input" placeholder="Enter command...">  
+      <div class="playerStats">
+        <ul>
+          <li class="job"></li>
+          <li class="health">
+            <span class="hp"></span>/<span class="maxHp"></span>
+          </li>
+          <li class="meleeAtt"></li>
+          <li class="magicAtt"></li>
+          <li class="rangedAtt"></li>
+        </ul>
+      </div>
+      <div class="gameFeedback">
+        <div id="gameOutput" class="game-output"></div>
+        <input
+          type="text"
+          id="commandInput"
+          class="command-input"
+          placeholder="Enter command..."
+        />
+      </div>
+      <div class="enemyStats">
+        <ul>
+          <li class="name"></li>
+          <li class="enemyHealth">
+            <span class="eHp"></span>/<span class="eMaxHp"></span>
+          </li>
+          <li class="eMeleeAtt"></li>
+          <li class="eMagicAtt"></li>
+          <li class="eRangedAtt"></li>
+        </ul>
+      </div>
     </main>
 
     <script type="module" src="index.js"></script>
