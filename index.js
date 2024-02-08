@@ -114,9 +114,9 @@ async function battle(hero, opponent, ongoing = false, battleLogic) {
             player.map.numberOfEncounters--;
             player.opponent = {};
             setTimeout(() => {
-              postUpdate("&nbsp;");
+              postUpdate(" ");
               postUpdate("---------------");
-              postUpdate("&nbsp;");
+              postUpdate(" ");
               displayAreaOptions(player.map);
             }, 500);
             return true;
