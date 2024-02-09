@@ -66,20 +66,42 @@ main {
   place-items: center;
 }
 
-.playerStats ul, .enemyStats ul{
-  width: 100%;
-}
-
-.playerStats li, .enemyStats li{
+.playerStats li,
+.enemyStats li {
   list-style-type: none;
   padding: 1em 2em;
 }
 
-.playerStats{
+.playerStats {
   text-align: right;
 }
 
 .enemyStats {
   visibility: hidden;
   text-align: left;
+}
+
+.statbox li:nth-child(1)::marker {
+  content: 'Class: ';
+}
+
+.eStatbox li:nth-child(1)::marker {
+  content: 'Enemy: ';
+}
+
+.statbox li:nth-child(2)::marker,
+.eStatbox li:nth-child(2)::marker {
+  content: 'Health: ';
+}
+.statbox li:nth-child(3)::marker,
+.eStatbox li:nth-child(3)::marker {
+  content: 'Melee: ';
+}
+.statbox li:nth-child(4)::marker,
+.eStatbox li:nth-child(4)::marker {
+  content: 'Magic: ';
+}
+.statbox li:nth-child(5)::marker,
+.eStatbox li:nth-child(5)::marker {
+  content: 'Ranged: ';
 }
