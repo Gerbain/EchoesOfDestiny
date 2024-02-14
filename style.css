@@ -89,19 +89,26 @@ main {
   content: 'Enemy: ';
 }
 
-.statbox li:nth-child(2)::marker,
+.statbox li:nth-child(2)::marker
+{
+  content: 'Special attacks: ';
+}
 .eStatbox li:nth-child(2)::marker {
   content: 'Health: ';
 }
-.statbox li:nth-child(3)::marker,
+
+.statbox li:nth-child(3)::marker {
+  content: 'Health: ';
+}
+.statbox li:nth-child(4)::marker,
 .eStatbox li:nth-child(3)::marker {
   content: 'Melee: ';
 }
-.statbox li:nth-child(4)::marker,
+.statbox li:nth-child(5)::marker,
 .eStatbox li:nth-child(4)::marker {
   content: 'Magic: ';
 }
-.statbox li:nth-child(5)::marker,
+.statbox li:nth-child(6)::marker,
 .eStatbox li:nth-child(5)::marker {
   content: 'Ranged: ';
 }

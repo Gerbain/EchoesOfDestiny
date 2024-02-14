@@ -291,6 +291,7 @@ function updateStats() {
   let enemyStats = document.querySelector('.enemyStats');
 
   playerStats.querySelector('.job').innerHTML = player.hero.archetype;
+  playerStats.querySelector('.specialAtt').innerHTML = player.hero.specialAttValue
   playerStats.querySelector('.hp').innerHTML = parseFloat(
     player.hero.health
   ).toFixed(2);

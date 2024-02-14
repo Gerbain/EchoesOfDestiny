@@ -93,7 +93,7 @@ export class LesserDemon extends Monster {
 
 export class GoblinArcher extends Monster {
   constructor() {
-    const baseHealth = 15;
+    const baseHealth = 10;
     const baseRanged = 8;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
@@ -124,8 +124,8 @@ export class GoblinArcher extends Monster {
 
 export class GoblinSpellSlinger extends Monster {
   constructor() {
-    const baseHealth = 10;
-    const baseMagic = 15;
+    const baseHealth = 8;
+    const baseMagic = 10;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -154,8 +154,8 @@ export class GoblinSpellSlinger extends Monster {
 
 export class GoblinSoldier extends Monster {
   constructor() {
-    const baseHealth = 20;
-    const baseMelee = 12;
+    const baseHealth = 14;
+    const baseMelee = 5;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
@@ -187,6 +187,8 @@ export class Hero {
     archetype,
     name,
     type,
+    specialAttValue,
+    maxSpecialAttValue,
     health,
     maxHealth,
     melee,
@@ -201,6 +203,8 @@ export class Hero {
     this.archetype = archetype;
     this.name = name;
     this.type = type;
+    this.specialAttValue = specialAttValue;
+    this.maxSpecialAttValue = specialAttValue;
     this.health = health;
     this.maxHealth = health;
     this.melee = melee;
@@ -230,6 +234,12 @@ export class Hero {
     } else {
       postUpdate(`You do not feel strong enough yet.`);
     }
+  }
+
+  rest(){
+    this.health = this.maxHealth
+    this.specialAttValue += 3
+    postUpdate('You feel refreshed!')
   }
 
   attack(target) {
@@ -273,14 +283,14 @@ export class Hero {
 
 export class Warrior extends Hero {
   constructor() {
-    const baseHealth = 28;
-    const baseMelee = 11;
+    const baseHealth = 30;
+    const baseMelee = 12;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
     const minMelee = Math.round(baseMelee * 0.8); // 80% of base melee
     const maxMelee = Math.round(baseMelee * 1.2); // 120% of base melee
-
+    const maxSpecialAttValue = 5
     const health =
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const melee = Math.round(Math.random() * (maxMelee - minMelee)) + minMelee;
@@ -289,6 +299,8 @@ export class Warrior extends Hero {
       'warrior',
       'player',
       'melee',
+      5,
+      maxSpecialAttValue,
       health,
       health,
       melee,
@@ -302,22 +314,52 @@ export class Warrior extends Hero {
     );
   }
 
-  specialAttack() {
-    postUpdate('Warrior performs a special attack!');
-    // Add logic for the special attack here
+  specialAttack(target) {
+    postUpdate('You perform a earpiercing war cry and charge at the enemy! You feel revitalized!');
+    if(this.specialAttValue > 0){
+      this.attack(target)
+      if(Math.random() <= 0.3){
+        if(target.melee > 0){
+          target.melee = target.melee/2
+          postUpdate('Enemy melee attack weakened!')
+        }else if(target.magic > 0){
+          target.magic = target.magic/2
+          postUpdate('Enemy magic attack weakened!')
+        }else if(target.ranged > 0){
+          target.ranged = target.ranged/2
+          postUpdate('Enemy ranged attack weakened!')
+        }
+      }else{
+        postUpdate('The enemy was not affected by your attempt!')
+      }
+      if(this.health == this.maxHealth){
+        postUpdate('You overheal for 10% of your health, FOR GLORY!')
+        this.health = (this.maxHealth*1.1)
+      }else if(this.health >= this.maxHealth*0.8 && this.health < this.maxHealth){
+        postUpdate('You feel yourself fully restored!')
+        this.health = this.maxHealth
+      }else if(this.health < this.maxHealth*0.8){
+        postUpdate('You regain 20% of your hp! ')
+        this.health = (this.health + (this.maxHealth*0.2))
+      }
+    }else{
+      postUpdate('You have no energy for a special attack, you attempt to attack instead..')
+      this.attack(target)
+    }
+    this.specialAttValue -= 1
   }
 }
 
 export class Mage extends Hero {
   constructor() {
-    const baseHealth = 18;
-    const baseMagic = 15;
+    const baseHealth = 20;
+    const baseMagic = 17;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
     const minMagic = Math.round(baseMagic * 0.8); // 80% of base magic
     const maxMagic = Math.round(baseMagic * 1.2); // 120% of base magic
-
+    const maxSpecialAttValue = 3
     const health =
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const magic = Math.round(Math.random() * (maxMagic - minMagic)) + minMagic;
@@ -326,6 +368,8 @@ export class Mage extends Hero {
       'mage',
       'player',
       'magic',
+      3,
+      maxSpecialAttValue,
       health,
       health,
       0,
@@ -339,22 +383,37 @@ export class Mage extends Hero {
     );
   }
 
-  specialAttack() {
-    postUpdate('Mage casts a powerful spell!');
-    // Add logic for the special attack here
+  specialAttack(target) {
+    const randomizer = Math.random()
+    if(this.specialAttValue > 0){
+      postUpdate('You conjure a massive icicle and fire it at the enemy!');
+      if(Math.random() <= 0.05){
+        target.health = 0
+        postUpdate('You obliterate the enemy!')
+      }else if(randomizer > 0.06 && randomizer <= 0.55){
+        postUpdate(`You grazed the enemy and managed to do ${target.health/2} damage!`)
+        target.health = target.health/2
+      }else{
+        postUpdate('You missed the enemy, brace for retaliation!')
+      }
+      this.specialAttValue -= 1
+   }else{
+    postUpdate('You do not have the mana to cast a powerfull spell right now.. You desperately attack in attempt to defend yourself.')
+    this.attack(target)
+   }
   }
 }
 
 export class Ranger extends Hero {
   constructor() {
-    const baseHealth = 20;
-    const baseRanged = 14;
+    const baseHealth = 24;
+    const baseRanged = 16;
 
     const minHealth = Math.round(baseHealth * 0.8); // 80% of base health
     const maxHealth = Math.round(baseHealth * 1.2); // 120% of base health
     const minRanged = Math.round(baseRanged * 0.8); // 80% of base ranged
     const maxRanged = Math.round(baseRanged * 1.2); // 120% of base ranged
-
+    const maxSpecialAttValue = 3
     const health =
       Math.round(Math.random() * (maxHealth - minHealth)) + minHealth;
     const ranged =
@@ -364,6 +423,8 @@ export class Ranger extends Hero {
       'ranger',
       'player',
       'ranged',
+      3,
+      maxSpecialAttValue,
       health,
       health,
       0,
@@ -377,8 +438,47 @@ export class Ranger extends Hero {
     );
   }
 
-  specialAttack() {
-    postUpdate('Ranger fires a barrage of arrows!');
-    // Add logic for the special attack here
+  specialAttack(target) {
+    postUpdate('You fire a volley of arrows!');
+    const randomizer = Math.random()
+    if(this.specialAttValue > 0){
+      if(randomizer > 0.16){
+        postUpdate('You fire an arrow-at the speed of light!')
+        this.attack(target)
+        postUpdate('Another arrow quickly follow the first one')
+        this.attack(target)
+      }else if(randomizer <= 0.15){
+        postUpdate('You fire an arrow-at the speed of light!')
+        this.attack(target)
+        postUpdate('Another arrow quickly follow the first one')
+        this.attack(target)
+        postUpdate('What is this? A third arrow?')
+        this.attack(target)
+      }else if(randomizer <= 0.05){
+        postUpdate('You fire an arrow-at the speed of light!')
+        this.attack(target)
+        postUpdate('Another arrow quickly follow the first one')
+        this.attack(target)
+        postUpdate('What is this? A third arrow?')
+        this.attack(target)
+        postUpdate('AND ANOTHER ONE?')
+        this.attack(target)
+      }else if(randomizer <= 0.01){
+        postUpdate('You fire an arrow-at the speed of light!')
+        this.attack(target)
+        postUpdate('Another arrow quickly follow the first one')
+        this.attack(target)
+        postUpdate('What is this? A third arrow?')
+        this.attack(target)
+        postUpdate('AND ANOTHER ONE?')
+        this.attack(target)
+        postUpdate('ITS OVER 9000!!')
+        this.attack(target);
+      }
+      this.specialAttValue -= 1
+    }else{
+      postUpdate('This is not the moment to act like Legolas, you manage to fire just one arrow')
+      this.attack(target)
+    }
   }
 }
